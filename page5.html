@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You 💙</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  min-height:100vh;
+  background:linear-gradient(135deg,#000000,#0a1f44);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+.container{
+  text-align:center;
+  max-width:800px;
+  padding:20px;
+  z-index:2;
+}
+
+h1{
+  color:#fff;
+  font-size:2.5rem;
+  text-shadow:0 0 15px #00aaff;
+}
+
+.message{
+  color:#d6ecff;
+  font-size:1.2rem;
+  margin-top:20px;
+  line-height:1.8;
+  min-height:200px;
+}
+
+.cursor{
+  width:2px;
+  background:#00aaff;
+  animation:blink 1s infinite;
+}
+
+@keyframes blink{
+  50%{opacity:0;}
+}
+
+/* Floating */
+.heart,.balloon{
+  position:absolute;
+  bottom:-50px;
+  animation:floatUp linear infinite;
+}
+
+.heart{color:#00aaff;font-size:20px;}
+
+.balloon{
+  width:30px;height:40px;
+  background:#00aaff;
+  border-radius:50%;
+}
+
+.balloon::after{
+  content:'';
+  position:absolute;
+  width:2px;height:30px;
+  background:white;
+  top:40px;left:50%;
+}
+
+@keyframes floatUp{
+  0%{transform:translateY(0);opacity:0;}
+  50%{opacity:1;}
+  100%{transform:translateY(-120vh);opacity:0;}
+}
+
+/* Blast */
+.explosion{
+  position:absolute;
+  width:10px;height:10px;
+  background:#00aaff;
+  border-radius:50%;
+  left:50%;top:50%;
+  animation:explode 1s ease-out forwards;
+}
+
+@keyframes explode{
+  to{
+    transform:scale(25);
+    opacity:0;
+  }
+}
+
+/* Cake */
+.cake{
+  display:none;
+  margin-top:30px;
+  animation:fadeIn 2s ease;
+}
+
+.layer{
+  width:200px;
+  height:40px;
+  margin:auto;
+  border-radius:10px;
+}
+
+.layer1{background:#1e90ff;}
+.layer2{background:#63b3ff;margin-top:5px;}
+.layer3{background:#a8d8ff;margin-top:5px;}
+
+.candles{
+  display:flex;
+  justify-content:center;
+  gap:15px;
+  margin-top:-10px;
+}
+
+.candle{
+  width:8px;
+  height:0;
+  background:white;
+  position:relative;
+  animation:grow 1s forwards;
+}
+
+@keyframes grow{
+  to{height:25px;}
+}
+
+.candle::after{
+  content:'';
+  position:absolute;
+  width:8px;
+  height:12px;
+  background:yellow;
+  border-radius:50%;
+  top:-12px;
+  animation:flicker 0.3s infinite;
+}
+
+@keyframes flicker{
+  50%{opacity:0.5;}
+}
+
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* BUTTON */
+.video-btn{
+  display:none;
+  margin-top:30px;
+  padding:12px 25px;
+  background:#00aaff;
+  color:#fff;
+  border-radius:25px;
+  text-decoration:none;
+  transition:0.3s;
+}
+
+.video-btn:hover{
+  background:#007acc;
+  transform:scale(1.05);
+}
+
+@media(max-width:768px){
+  h1{font-size:2rem;}
+  .message{font-size:1rem;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>Happy Birthday 💙</h1>
+  <div class="message" id="text"></div>
+  <span class="cursor"></span>
+
+  <!-- 🎂 Cake -->
+  <div class="cake" id="cake">
+    <div class="candles">
+      <div class="candle"></div>
+      <div class="candle"></div>
+      <div class="candle"></div>
+    </div>
+
+    <div class="layer layer1"></div>
+    <div class="layer layer2"></div>
+    <div class="layer layer3"></div>
+  </div>
+
+  <!-- 🎥 VIDEO BUTTON -->
+  <a href="https://youtu.be/AiL3xxxV5r0?si=12mIxUUkHbK87FCf" target="_blank" class="video-btn" id="videoBtn">
+    🎥 Watch Your Surprise
+  </a>
+
+</div>
+
+<script>
+
+// MESSAGE
+const text = `Sach bolu...
+tu sirf ek friend nahi hai 😊
+
+Tu wo hai jisse baat karke din better ho jata hai 🤍
+
+Kabhi kabhi lagta hai...
+tujhe hasana meri responsibility hai 😄
+
+Aur haan...
+thoda sa special feel bhi hota hai tere liye ❤️
+
+Par sabse important baat —
+Main hamesha chahta hu tu safe rahe, khush rahe ✨
+
+Chahe kuch bhi ho...
+main hamesha tere side rahunga 💙
+
+Happy Birthday 🎉`;
+
+let i=0;
+
+function typeWriter(){
+  if(i<text.length){
+    document.getElementById("text").innerHTML += text.charAt(i);
+    i++;
+    setTimeout(typeWriter,40);
+  } else {
+    massiveBlast();
+  }
+}
+
+typeWriter();
+
+// 💥 BLAST + CAKE + BUTTON
+function massiveBlast(){
+  for(let i=0;i<30;i++){
+    let exp=document.createElement("div");
+    exp.className="explosion";
+    exp.style.left=(50+Math.random()*20-10)+"%";
+    exp.style.top=(50+Math.random()*20-10)+"%";
+    document.body.appendChild(exp);
+    setTimeout(()=>exp.remove(),1000);
+  }
+
+  setTimeout(()=>{
+    document.getElementById("cake").style.display="block";
+  },800);
+
+  setTimeout(()=>{
+    document.getElementById("videoBtn").style.display="inline-block";
+  },1500);
+}
+
+// Hearts
+setInterval(()=>{
+  let h=document.createElement("div");
+  h.className="heart";
+  h.innerText="💙";
+  h.style.left=Math.random()*100+"vw";
+  h.style.animationDuration=(Math.random()*3+3)+"s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+},400);
+
+// Balloons
+setInterval(()=>{
+  let b=document.createElement("div");
+  b.className="balloon";
+  b.style.left=Math.random()*100+"vw";
+  b.style.animationDuration=(Math.random()*4+4)+"s";
+  document.body.appendChild(b);
+  setTimeout(()=>b.remove(),7000);
+},800);
+
+</script>
+
+</body>
+</html>

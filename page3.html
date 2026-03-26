@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title> Gallery</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Poppins:wght@300&display=swap"
+        rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, #000000, #001f4d);
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* DORAEMON BACKGROUND */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 1020px;
+            height: 1020px;
+            background: url('doremon3.png') no-repeat center;
+            background-size: contain;
+            transform: translate(-50%, -50%);
+            opacity: 0.05;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* TITLE */
+        .title {
+            text-align: center;
+            color: white;
+            font-size: 38px;
+            margin: 30px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* SCRAPBOOK */
+        .scrapbook {
+            width: 90%;
+            margin: auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* CENTER LINE */
+        .center-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* MEMORY ROW */
+        .memory-row {
+            display: flex;
+            align-items: center;
+            margin: 30px 0;
+        }
+
+        /* LEFT / RIGHT */
+        .left {
+            justify-content: flex-start;
+        }
+
+        .right {
+            justify-content: flex-end;
+        }
+
+        /* MEMORY CARD */
+        .memory {
+            background: #ffffff;
+            width: 340px;
+            padding: 12px;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 140, 255, 0.25);
+            position: relative;
+            transition: 0.3s;
+        }
+
+        /* ROTATION */
+        .left .memory {
+            transform: rotate(-3deg);
+        }
+
+        .right .memory {
+            transform: rotate(3deg);
+        }
+
+        /* HOVER */
+        .memory:hover {
+            transform: scale(1.05) rotate(0deg);
+        }
+
+        /* IMAGE */
+        .memory img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        /* CAPTION */
+        .caption {
+            font-family: 'Caveat', cursive;
+            font-size: 20px;
+            color: #333;
+            padding: 10px 5px 5px;
+        }
+
+        /* HIGHLIGHT */
+        .caption strong {
+            color: #0077ff;
+        }
+
+        /* TAPE EFFECT */
+        .memory::before {
+            content: "";
+            position: absolute;
+            width: 80px;
+            height: 18px;
+            background: rgba(255, 255, 255, 0.7);
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-8deg);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        /* FLOATING HEARTS */
+        .heart {
+            position: fixed;
+            bottom: -30px;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #00bfff, #0044ff);
+            transform: rotate(45deg);
+            animation: floatHeart 7s linear infinite;
+            opacity: 0.7;
+        }
+
+        .heart::before,
+        .heart::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #00bfff, #0044ff);
+            border-radius: 50%;
+        }
+
+        .heart::before {
+            top: -10px;
+            left: 0;
+        }
+
+        .heart::after {
+            left: -10px;
+            top: 0;
+        }
+
+        /* HEART POSITIONS */
+        .heart:nth-child(1) {
+            left: 10%;
+            animation-duration: 6s;
+        }
+
+        .heart:nth-child(2) {
+            left: 30%;
+            animation-duration: 8s;
+        }
+
+        .heart:nth-child(3) {
+            left: 50%;
+            animation-duration: 7s;
+        }
+
+        .heart:nth-child(4) {
+            left: 70%;
+            animation-duration: 9s;
+        }
+
+        .heart:nth-child(5) {
+            left: 90%;
+            animation-duration: 6s;
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(0) rotate(45deg);
+                opacity: 0.7;
+            }
+
+            100% {
+                transform: translateY(-110vh) rotate(45deg);
+                opacity: 0;
+            }
+        }
+
+        /* BUTTON */
+        .button-container {
+            text-align: center;
+            margin: 60px 0 80px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .next-btn {
+            display: inline-block;
+            padding: 14px 30px;
+            font-size: 18px;
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #00bfff, #0044ff);
+            box-shadow: 0 0 10px #00bfff, 0 0 20px #0044ff;
+            transition: 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .next-btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+            transition: 0.5s;
+        }
+
+        .next-btn:hover::before {
+            left: 100%;
+        }
+
+        .next-btn:hover {
+            box-shadow: 0 0 20px #00bfff, 0 0 40px #0044ff;
+            transform: scale(1.05);
+        }
+
+        /* MOBILE */
+        @media (max-width: 768px) {
+            .memory {
+                width: 90%;
+            }
+
+            .memory-row {
+                justify-content: center !important;
+            }
+
+            .center-line {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- song -->
+    <audio id="bgm" autoplay loop>
+        <source src="page2song.mp3" type="audio/mpeg">
+    </audio>
+    <div class="title">💙Gallery💙</div>
+
+    <div class="scrapbook">
+
+        <div class="center-line"></div>
+
+        <div class="memory-row left">
+            <div class="memory">
+                <img src="picture1.jpg">
+                <div class="caption">
+                    when i saw this picture just one word for this i.e., <strong>average , haan chalga</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="memory-row right">
+            <div class="memory">
+                <img src="picture2.png">
+                <div class="caption">
+                    itni gor se maat dekh pagli <strong>pyar ho jayega</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="memory-row left">
+            <div class="memory">
+                <img src="picture3.jpg">
+                <div class="caption">
+                    kaam hi esa kyu karti hai ki muuh chupana pade. <strong>wese mehendi mai jach rhi ho</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="memory-row right">
+            <div class="memory">
+                <img src="picture4.jpeg">
+                <div class="caption">
+                    i am here , to whom you are <strong>looking 🤣</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="memory-row left">
+            <div class="memory">
+                <img src="picture5.jpeg">
+                <div class="caption">
+                    baki 3 photo to thik hai 4th one walla <strong>jabarzasti</strong> kyu utha rhi hai.
+                </div>
+            </div>
+        </div>
+
+        <div class="memory-row right">
+            <div class="memory">
+                <img src="picture6.jpeg">
+                <div class="caption">
+                    except mine & yours break everyone's <strong>heart 🫀</strong> aurat.
+                </div>
+            </div>
+        </div>
+
+        <div class="memory-row left">
+            <div class="memory">
+                <img src="picture7.jpeg">
+                <div class="caption">
+                    sahi hai khud niche dekh ke chal rhi hai aur logon ko khubsurti se <strong>gira rhi hai.</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="memory-row right">
+            <div class="memory">
+                <img src="picture8.jpeg">
+                <div class="caption">
+                    who's the lucky one for whom <strong>shivratri is done every year 🙂</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="memory-row left">
+            <div class="memory">
+                <img src="picture9.jpeg">
+                <div class="caption">
+                    i want to see all your version and i know it will be more <strong>beautiful😘</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="memory-row right">
+            <div class="memory">
+                <img src="picture10.jpeg">
+                <div class="caption">
+                    sorry, i am crossing the <strong>limit 😁</strong>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- BUTTON -->
+    <div class="button-container">
+        <a href="page4.html" class="next-btn">💙 this way madam →</a>
+    </div>
+
+    <!-- FLOATING HEARTS -->
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <script>
+        document.addEventListener("click", function () {
+            document.getElementById("bgm").play();
+        });
+
+    </script>
+
+</body>
+
+</html>

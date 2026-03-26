@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<!-- 🔥 IMPORTANT FOR RESPONSIVE -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>For Someone Special 🎂</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&family=Pacifico&display=swap" rel="stylesheet">
+
+<style>
+
+* {margin:0;padding:0;box-sizing:border-box;}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: white;
+    overflow: hidden;
+}
+
+/* Sections */
+.section {
+    position: absolute;
+    width: 100%;
+    min-height: 100vh;
+    padding: 20px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    background: linear-gradient(120deg, #000000, #000814, #001d3d, #003566);
+}
+
+.active {display:flex;}
+
+/* Responsive text */
+h1 {
+    font-family: 'Pacifico', cursive;
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+}
+
+p {
+    font-size: clamp(0.9rem, 3vw, 1.1rem);
+    margin-top: 10px;
+}
+
+/* Button */
+button {
+    margin-top:20px;
+    padding:12px 20px;
+    border:none;
+    background:#4da6ff;
+    color:white;
+    border-radius:25px;
+    cursor:pointer;
+    max-width: 90%;
+}
+
+/* CHAT */
+.chat-box {
+    width: 100%;
+    max-width: 400px;
+    height: 70vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.chat-box::-webkit-scrollbar {display:none;}
+
+.message {
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 20px;
+    max-width: 75%;
+    opacity: 0;
+    transform: translateY(20px);
+    font-size: clamp(0.8rem, 3vw, 0.95rem);
+}
+
+.left {background: rgba(255,255,255,0.1); align-self:flex-start;}
+.right {background:#4da6ff; align-self:flex-end;}
+
+.show {animation: showMsg 0.5s forwards;}
+
+@keyframes showMsg {
+    to {opacity:1; transform:translateY(0);}
+}
+
+/* GRAPH */
+.graph {width:100%; max-width:400px;}
+.bar {margin:10px 0; text-align:left;}
+.progress {
+    width:0%;
+    height:10px;
+    background:#4da6ff;
+    border-radius:10px;
+    transition:1.5s;
+}
+
+/* MODALS */
+.modal {
+    position: fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background: rgba(0,0,0,0.8);
+    display:none;
+    justify-content:center;
+    align-items:center;
+}
+
+.modal-box {
+    width: 90%;
+    max-width: 320px;
+    background:#001d3d;
+    padding:20px;
+    border-radius:15px;
+    text-align:center;
+}
+
+.options button {
+    margin:10px;
+}
+
+/* FINAL */
+.loader {
+    margin-top:15px;
+    display:none;
+}
+
+.loader p {
+    margin:8px 0;
+}
+
+</style>
+</head>
+
+<body>
+     <!-- song -->
+   <audio id="bgm" autoplay loop>
+    <source src="song4.mp3" type="audio/mpeg">
+</audio>
+
+<!-- SECTION 1 -->
+<div class="section active" id="sec1">
+    <h1>Warning ⚠️</h1>
+    <p>This page was made for someone… who doesn’t even know how special she is 😌</p>
+    <button onclick="goTo('sec2')">I think it's me 👀</button>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section" id="sec2">
+    <h1>Oh... so it's you 😏</h1>
+    <h1>Happy Birthday ❤️</h1>
+    <button onclick="startChat()">Continue →</button>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section" id="sec3">
+    <div class="chat-box" id="chatBox"></div>
+    <button id="nextBtn" style="display:none;" onclick="goToAnalysis()">Next →</button>
+</div>
+
+<!-- SECTION 4 -->
+<div class="section" id="sec4">
+    <h1>Analysis Report 📊</h1>
+
+    <div class="graph">
+        <div class="bar"><span>Cute 😇</span><div class="progress" data-width="90%"></div></div>
+        <div class="bar"><span>Mature 🧠</span><div class="progress" data-width="85%"></div></div>
+        <div class="bar"><span>Understanding 💫</span><div class="progress" data-width="88%"></div></div>
+        <div class="bar"><span>Special ❤️</span><div class="progress" data-width="100%"></div></div>
+        <div class="bar"><span>Headache❤️</span><div class="progress" data-width="10%"></div></div>
+    </div>
+
+    <button onclick="startQA()">Q&A Session 💬</button>
+</div>
+
+<!-- Q&A MODAL -->
+<div class="modal" id="modal">
+    <div class="modal-box">
+        <h3 id="question"></h3>
+        <div class="options">
+            <button onclick="nextQ()">Yes</button>
+            <button id="noBtn">No</button>
+        </div>
+    </div>
+</div>
+
+<!-- FINAL MODAL -->
+<div class="modal" id="finalModal">
+    <div class="modal-box">
+        <h3>Kya tum impress hui? 😏</h3>
+        <button onclick="finalYes()">Yes 💙</button>
+
+        <div class="loader" id="loader">
+            <p>Thank you… tumhe present acha laga 💫</p>
+            <p>Go birthday girl… one last surprise is for you 🎁</p>
+            <p>Loading... ⏳</p>
+        </div>
+    </div>
+</div>
+
+<script>
+
+/* Section */
+function goTo(id){
+    document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+}
+
+/* Chat */
+const messages = [
+
+{side:"left", text:"Pata hai… ek cheez jo tumhe special banati hai?"},
+{side:"right", text:"Acha? kya 😏"},
+
+{side:"left", text:"Tumhe coffee ke era chai pasand hai ☕"},
+{side:"right", text:"Hmm… sahi bola ☕"},
+
+{side:"left", text:"Aur tum ghoomna pasand karti ho…"},
+{side:"left", text:"bas har kisi ke saath nahi."},
+{side:"right", text:"Obviously… vibe matter karti hai 🙂"},
+
+{side:"left", text:"Momos pasand hai… but roz nahi."},
+{side:"right", text:"Haan… sometimes enough hota hai 😌"},
+
+{side:"left", text:"Tum judge nahi karti kisi ko…"},
+{side:"right", text:"Karna bhi nahi chahiye."},
+
+{side:"left", text:"Reels dekhti ho…"},
+{side:"left", text:"par responsibilities ignore nahi karti."},
+{side:"right", text:"Balance hona chahiye 😉"},
+
+{side:"left", text:"Aur sunset…"},
+{side:"left", text:"wo bhi special tab lagta hai… jab koi special saath ho."},
+{side:"right", text:"Maybe… 🌅"},
+
+{side:"left", text:"Drama pasand nahi karti , but Doremon pasand hai tumhe 😄"},
+{side:"right", text:"That’s not funny 😤"},
+
+{side:"left", text:"Aur vanilla ice cream 🍦 & Dairy milk silk "},
+{side:"right", text:"Okay that’s accurate 😂"},
+
+{side:"left", text:"Tumhe zyada drama pasand nahi…"},
+{side:"left", text:"simple cheezein… simple log."},
+{side:"right", text:"Peace matters."},
+
+{side:"left", text:"Aur ek cheez aur…"},
+{side:"left", text:"tum har cheez limit mein rakhti ho."},
+{side:"right", text:"Because excess ruins everything."},
+
+{side:"left", text:"Isliye shayad tum different ho."},
+{side:"right", text:"Ya phir tum zyada observe karte ho."},
+
+{side:"left", text:"Shayad dono 🙂"},
+{side:"left", text:"..."},
+{side:"left", text:"Aur shayad… care bhi karta hoon thoda."},
+
+{side:"right", text:"Thoda? 😏"},
+{side:"left", text:"Ok… chalo thoda zyada."},
+
+{side:"left", text:"btw , birthday to 11 april ko hai na 😅"},
+{side:"right", text:"haan... but 28 march ko manati huun 😌"},
+{side:"left", text:"brain with beauty you are 😌"},
+
+{side:"left", text:"But ek cheez poochu… 🤔"},
+{side:"right", text:"Haan pooch na"},
+
+{side:"left", text:"Kya tujhe nahi lagta… tu bhi mujhe yaad karti hogi kabhi?"},
+{side:"right", text:"Umm… 😅"},
+
+{side:"left", text:"Kher… aap madam ho, aap kyu yaad karoge 😌"},
+{side:"right", text:"Hehe… aisa nahi hai"},
+
+{side:"left", text:"Wohi karo jo dil kare 🙂"},
+{side:"right", text:"Haan… kisi ke kehne se karungi to originality nahi rahegi"},
+
+{side:"left", text:"Correct! 💯"},
+{side:"right", text:"🙂"},
+
+{side:"left", text:"Waise… ek baat bolu?"},
+{side:"right", text:"Bolo"},
+
+{side:"left", text:"Mujhe lagta hai… tum thodi si special ho ✨"},
+{side:"right", text:"Lagta hai… ya pakka? 😄"},
+
+{side:"left", text:"Lagta nahi… ab toh pakka lagne laga hai 😄"}
+
+
+];
+
+
+function startChat(){
+    goTo("sec3");
+    let box = document.getElementById("chatBox");
+    let btn = document.getElementById("nextBtn");
+    box.innerHTML="";
+    btn.style.display="none";
+
+    let i=0;
+
+    function show(){
+        if(i>=messages.length){
+            btn.style.display="block";
+            return;
+        }
+
+        let m=document.createElement("div");
+        m.classList.add("message",messages[i].side);
+        m.innerText=messages[i].text;
+        box.appendChild(m);
+
+        setTimeout(()=>{m.classList.add("show"); box.scrollTop=box.scrollHeight;},100);
+
+        i++;
+        setTimeout(show,1800);
+    }
+    show();
+}
+
+/* Analysis */
+function goToAnalysis(){
+    goTo("sec4");
+    document.querySelectorAll(".progress").forEach(bar=>{
+        bar.style.width=bar.getAttribute("data-width");
+    });
+}
+
+/* Q&A */
+const questions=[
+"Q1. kya date pe chalogi mere sath kabhi?",
+"Q2. agar ye same chij kisi aur ke liye karu to tumhe farak padega?",
+"Q3. to bolo haan ya naa"
+];
+
+let qIndex=0;
+
+function startQA(){
+    qIndex=0;
+    document.getElementById("modal").style.display="flex";
+    showQ();
+}
+
+function showQ(){
+    document.getElementById("question").innerText=questions[qIndex];
+}
+
+function nextQ(){
+    qIndex++;
+    if(qIndex>=questions.length){
+        document.getElementById("modal").style.display="none";
+        document.getElementById("finalModal").style.display="flex";
+        return;
+    }
+    showQ();
+}
+
+/* NO DODGE */
+let noBtn=document.getElementById("noBtn");
+noBtn.addEventListener("mouseover",()=>{
+    let x=Math.random()*150-75;
+    let y=Math.random()*150-75;
+    noBtn.style.transform=`translate(${x}px,${y}px)`;
+});
+
+/* FINAL */
+function finalYes(){
+    let loader=document.getElementById("loader");
+    loader.style.display="block";
+
+    setTimeout(()=>{
+        window.location.href="page5.html";
+    },5000);
+}
+    document.addEventListener("click", function () {
+        document.getElementById("bgm").play();
+    });
+
+
+</script>
+
+</body>
+</html>

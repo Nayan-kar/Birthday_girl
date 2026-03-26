@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For You (MOTI)💙</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: radial-gradient(circle at top, #0a0f2c, #000);
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* HEART */
+.heart-container {
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.heart {
+  width: 280px;
+  height: 280px;
+  background: url('photo1.jpg') center/cover;
+  transform: rotate(-45deg);
+  box-shadow: 0 0 40px #00aaff, 0 0 80px #0077ff;
+  animation: pulse 2s infinite;
+}
+
+.heart::before,
+.heart::after {
+  content: "";
+  width: 280px;
+  height: 280px;
+  background: inherit;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.heart::before { top: -140px; }
+.heart::after { left: 140px; }
+
+/* TEXT */
+.text {
+  position: fixed;
+  top: 70%;
+  width: 100%;
+  text-align: center;
+  color: #aee6ff;
+  font-size: 22px;
+  z-index: 2;
+}
+
+/* BUTTON */
+.enter-btn {
+  margin-top: 15px;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 25px;
+  background: linear-gradient(45deg, #ff4d6d, #00aaff);
+  color: white;
+  cursor: pointer;
+  transform: scale(0);
+  transition: 0.4s;
+}
+
+.enter-btn.show {
+  transform: scale(1);
+}
+
+/* DORAEMON */
+.doraemon {
+  position: fixed;
+  width: 90px;
+  animation: float 5s infinite ease-in-out;
+  opacity: 0.9;
+}
+
+/* FLOAT */
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-25px); }
+}
+
+/* FLOAT HEARTS */
+.float-heart {
+  position: fixed;
+  font-size: 18px;
+  animation: floatUp linear forwards;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(100vh); opacity:1; }
+  to { transform: translateY(-10vh); opacity:0; }
+}
+
+/* BLAST */
+.blast-heart {
+  position: fixed;
+  animation: explode 1.5s ease-out forwards;
+}
+
+@keyframes explode {
+  0% { transform: scale(0.3); opacity: 1; }
+  60% { opacity: 1; }
+  100% {
+    transform: translate(var(--x), var(--y)) scale(1.8);
+    opacity: 0;
+  }
+}
+
+/* GLOW */
+@keyframes pulse {
+  0% { box-shadow: 0 0 20px #00aaff; }
+  50% { box-shadow: 0 0 60px #00aaff; }
+  100% { box-shadow: 0 0 20px #00aaff; }
+}
+
+/* 🔥 RESPONSIVE FIXED */
+@media (max-width: 768px) {
+
+  .heart {
+    width: 220px;
+    height: 220px;
+  }
+
+  .heart::before,
+  .heart::after {
+    width: 220px;
+    height: 220px;
+  }
+
+  .heart::before { top: -110px; }
+  .heart::after { left: 110px; }
+
+  .text {
+    top: 65%; /* 👈 upar laya */
+    font-size: 20px; /* 👈 readable */
+    padding: 0 15px;
+  }
+
+  .enter-btn {
+    padding: 12px 28px; /* 👈 bigger */
+    font-size: 16px;   /* 👈 readable */
+    min-width: 160px;  /* 👈 fix size */
+  }
+
+  .doraemon {
+    width: 70px;
+  }
+
+}
+
+/* EXTRA SMALL */
+@media (max-width: 480px) {
+
+  .heart {
+    width: 190px;
+    height: 190px;
+  }
+
+  .heart::before,
+  .heart::after {
+    width: 190px;
+    height: 190px;
+  }
+
+  .heart::before { top: -95px; }
+  .heart::after { left: 95px; }
+
+  .text {
+    top: 62%; /* 👈 aur upar */
+    font-size: 18px;
+  }
+
+  .enter-btn {
+    padding: 12px 26px;
+    font-size: 15px;
+    min-width: 150px;
+  }
+
+  .doraemon {
+    width: 60px;
+  }
+
+}
+</style>
+
+</head>
+
+<body>
+  <!-- song -->
+   <audio id="bgm" autoplay loop>
+    <source src="song1.mp3" type="audio/mpeg">
+</audio>
+
+<!-- HEART -->
+<div class="heart-container">
+  <div class="heart"></div>
+</div>
+
+<!-- TEXT + BUTTON -->
+<div class="text">
+  <p>Hey... someone special is here Only for Moti 💙</p>
+  <button id="enterBtn" class="enter-btn" onclick="goNext()">CLICK HERE 💖</button>
+</div>
+
+<!-- DORAEMON -->
+<img src="doremon1.png" class="doraemon" style="top:5%; left:5%;">
+<img src="doremon2.png" class="doraemon" style="top:5%; right:5%;">
+<img src="doremon3.png" class="doraemon" style="top:25%; left:8%;">
+<img src="doremon8.png" class="doraemon" style="top:25%; right:8%;">
+<img src="doremon5.png" class="doraemon" style="bottom:10%; left:5%;">
+<img src="doremon4.png" class="doraemon" style="bottom:10%; right:5%;">
+<img src="doremon6.png" class="doraemon" style="top:60%; left:15%;">
+<img src="doremon7.png" class="doraemon" style="top:60%; right:15%;">
+
+<script>
+
+/* CONTINUOUS HEARTS */
+setInterval(() => {
+  let heart = document.createElement("div");
+  heart.className = "float-heart";
+  heart.innerHTML = Math.random() > 0.5 ? "💙" : "❤️";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = (12 + Math.random() * 20) + "px";
+  heart.style.animationDuration = (4 + Math.random() * 4) + "s";
+
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 8000);
+}, 200);
+
+/* TRIGGER */
+setTimeout(() => {
+  blastEffect();
+  document.getElementById("enterBtn").classList.add("show");
+}, 1000);
+
+/* BLAST */
+function blastEffect() {
+  let btn = document.getElementById("enterBtn");
+  let rect = btn.getBoundingClientRect();
+
+  let centerX = rect.left + rect.width / 2;
+  let centerY = rect.top + rect.height / 2;
+
+  let heartsArray = ["💙", "❤️", "💗"];
+
+  for (let i = 0; i < 80; i++) {
+    let heart = document.createElement("div");
+    heart.className = "blast-heart";
+
+    heart.innerHTML = heartsArray[Math.floor(Math.random() * heartsArray.length)];
+
+    let x = (Math.random() - 0.5) * 900 + "px";
+    let y = (Math.random() - 0.5) * 900 + "px";
+
+    heart.style.setProperty("--x", x);
+    heart.style.setProperty("--y", y);
+
+    heart.style.left = centerX + "px";
+    heart.style.top = centerY + "px";
+
+    heart.style.fontSize = (16 + Math.random() * 20) + "px";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 1800);
+  }
+}
+
+/* NEXT */
+function goNext() {
+  window.location.href = "page2.html";
+}
+
+  document.addEventListener("click", function () {
+        document.getElementById("bgm").play();
+    });
+
+</script>
+
+</body>
+</html>
